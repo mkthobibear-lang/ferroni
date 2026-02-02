@@ -3,175 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>XIXA V21 FERRONI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>XIXA V21 FERRONI PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
         :root {
-            --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --text-sub: #6b7280; --border: #e5e7eb;
-            --primary: #84cc16; --primary-dark: #65a30d;
-            --chart-shopee: #f97316; --chart-tiktok: #000000; --chart-lazada: #0ea5e9; --chart-other: #84cc16;
-            --header-h: 60px; --footer-h: 70px;
+            --bg: #f1f5f9; /* Màu nền xám nhẹ để làm nổi card trắng */
+            --card: #ffffff; 
+            --text: #1e293b; 
+            --text-sub: #64748b; 
+            --border: #e2e8f0;
+            --primary: #84cc16; 
+            --primary-grad: linear-gradient(135deg, #a3e635 0%, #65a30d 100%); /* 3D Gradient */
+            --primary-light: #ecfccb;
+            --primary-dark: #4d7c0f;
+            --danger: #ef4444;
+            
+            /* SHADOW 3D & DEPTH */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            
+            --chart-shopee: #ee4d2d; 
+            --chart-tiktok: #000000; 
+            --chart-lazada: #0f146d; 
+            --chart-other: #84cc16;
+            
+            --header-h: 65px; 
+            --footer-h: 75px;
+            --radius: 16px;
         }
 
         [data-theme="dark"] {
-            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --text-sub: #94a3b8; --border: #334155;
-            --primary: #a3e635; --primary-dark: #84cc16; --chart-tiktok: #ffffff;
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f8fafc; 
+            --text-sub: #94a3b8; 
+            --border: #334155;
+            --primary: #a3e635; 
+            --primary-grad: linear-gradient(135deg, #bef264 0%, #65a30d 100%);
+            --primary-light: rgba(163, 230, 53, 0.15);
+            --primary-dark: #84cc16;
+            --chart-tiktok: #ffffff;
+            --chart-lazada: #3b82f6;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); font-family: 'Manrope', sans-serif; margin: 0; padding: 0; width: 100%; height: 100%; transition: 0.3s; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Manrope', sans-serif; margin: 0; padding: 0; 
+            width: 100%; height: 100%; overflow: hidden; user-select: none;
+            transition: background 0.3s;
+        }
+
+        .hidden-inp { display: none !important; }
 
         /* HEADER */
-        #fixed-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: var(--card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        #fixed-header { 
+            position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); 
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 16px; z-index: 1000; transition: 0.3s; box-shadow: var(--shadow-sm);
+        }
+        [data-theme="dark"] #fixed-header { background: rgba(30, 41, 59, 0.9); }
+
         .brand-c { display: flex; align-items: center; gap: 10px; }
-        .app-logo img { height: 38px; border-radius: 6px; display: block; }
-        .brand-txt { display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
-        .brand-name { font-weight: 900; font-size: 18px; color: var(--primary); letter-spacing: 0.5px; text-transform: uppercase; }
-        .brand-date { font-size: 10px; font-weight: 600; color: var(--text-sub); }
+        .app-logo img { height: 40px; border-radius: 10px; box-shadow: var(--shadow); }
+        .brand-name { font-weight: 800; font-size: 18px; color: var(--primary-dark); letter-spacing: -0.5px; }
+        .brand-date { font-size: 11px; font-weight: 600; color: var(--text-sub); background: var(--border); padding: 2px 8px; border-radius: 6px; margin-top: 2px; }
 
-        /* FOOTER */
-        #fixed-footer { position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-h); background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-btn { background: none; border: none; color: var(--text-sub); font-size: 10px; display: flex; flex-direction: column; align-items: center; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .nav-btn.active { color: var(--primary-dark); }
-        .nav-btn span { font-size: 24px; margin-bottom: 2px; }
-        .badge { background: #ef4444; color: white; font-size: 9px; padding: 2px 5px; border-radius: 10px; position: absolute; top: -5px; right: 15px; display: none; }
+        /* SCROLL & PAGE */
+        #main-scroll { 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+            padding: calc(var(--header-h) + 16px) 16px calc(var(--footer-h) + 20px) 16px;
+            overflow-y: auto; -webkit-overflow-scrolling: touch; z-index: 1; 
+        }
+        .page { display: none; opacity: 0; transform: translateY(10px); transition: 0.3s; }
+        .page.active { display: block; opacity: 1; transform: translateY(0); }
 
-        /* LAYOUT */
-        #main-scroll { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding-top: calc(var(--header-h) + 15px); padding-bottom: calc(var(--footer-h) + 15px); padding-left: 15px; padding-right: 15px; overflow-y: auto; -webkit-overflow-scrolling: touch; z-index: 1; }
-        .page { display: none; } .page.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        /* TABS */
+        .main-tabs { 
+            display: flex; background: var(--card); border-radius: var(--radius); padding: 4px; margin-bottom: 20px; 
+            box-shadow: var(--shadow-inner); border: 1px solid var(--border);
+        }
+        .tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 700; color: var(--text-sub); border-radius: 12px; transition: 0.2s; cursor: pointer; }
+        .tab-btn.active { background: var(--bg); color: var(--primary-dark); box-shadow: var(--shadow-sm); }
 
-        /* THEME SWITCH */
-        .theme-switch { position: relative; width: 50px; height: 26px; background: var(--bg); border-radius: 20px; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; }
-        .theme-knob { position: absolute; left: 3px; width: 20px; height: 20px; background: var(--primary); border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        [data-theme="dark"] .theme-knob { transform: translateX(24px); }
-
-        /* CHANNEL GRID */
-        .channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; width: 100%; }
-        .channel-grid label { width: 100%; display: block; cursor: pointer; }
-        .ch-box { width: 100%; height: 44px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; position: relative; padding: 0 8px; }
-        .ch-box img { height: 24px; width: 24px; object-fit: contain; flex-shrink: 0; }
-        .ch-box span { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
-        .ch-radio:checked + .ch-box { border-color: var(--primary); background: rgba(132, 204, 22, 0.1); box-shadow: 0 0 0 1px var(--primary); }
+        /* CHANNEL GRID - 3D Effect */
+        .channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .ch-box { 
+            width: 100%; height: 50px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); 
+            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s;
+            box-shadow: var(--shadow); /* Tạo độ nổi */
+        }
+        .ch-box:active { transform: translateY(2px); box-shadow: none; }
+        .ch-box img { height: 24px; width: 24px; object-fit: contain; }
+        .ch-box span { font-size: 13px; font-weight: 700; color: var(--text); }
+        .ch-radio:checked + .ch-box { border-color: var(--primary); background: var(--primary-light); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
         .ch-radio:checked + .ch-box span { color: var(--primary-dark); }
 
-        /* COMPONENTS */
-        .main-tabs { display: flex; background: var(--border); border-radius: 12px; padding: 4px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 700; color: var(--text-sub); border-radius: 8px; transition: 0.2s; }
-        .tab-btn.active { background: var(--card); color: var(--primary-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-
+        /* INPUT SCANNER */
         .inp-grp { position: relative; margin-bottom: 20px; }
-        .inp-main { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 15px; padding-right: 50px; border-radius: 14px; color: var(--text); font-size: 15px; outline: none; transition: 0.3s; }
-        .inp-main:focus { border-color: var(--primary); }
-        .btn-scan { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 var(--primary-dark); }
+        .inp-main { 
+            width: 100%; background: var(--card); border: 1px solid var(--border); padding: 16px 55px 16px 16px; 
+            border-radius: var(--radius); color: var(--text); font-size: 15px; font-weight: 600; box-shadow: var(--shadow);
+        }
+        .btn-scan { 
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%); 
+            width: 40px; height: 40px; background: var(--primary-grad); border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; 
+            box-shadow: 0 4px 10px var(--primary-light); transition: 0.2s;
+        }
+        .btn-scan:active { transform: translateY(-50%) scale(0.95); }
 
-        .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .media-c { aspect-ratio: 1; background: var(--card); border: 2px dashed var(--border); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: 0.3s; }
-        .media-c.ok { border-style: solid; border-color: var(--primary); background: rgba(132, 204, 22, 0.1); }
-        .media-prev { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; }
-        .btn-del { position: absolute; top: 5px; right: 5px; z-index: 10; background: #ef4444; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; cursor: pointer; color: white; }
-        .hidden-inp { position: absolute; inset: 0; opacity: 0; z-index: 2; cursor: pointer; }
+        /* MEDIA BOX */
+        .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .media-c { 
+            aspect-ratio: 1; background: var(--card); border: 2px dashed var(--border); border-radius: var(--radius); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden;
+            box-shadow: var(--shadow-sm); transition: 0.2s;
+        }
+        .media-c:active { transform: scale(0.98); }
+        .media-c.ok { border-style: solid; border-color: var(--primary); }
+        .media-prev { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; background: #000; }
+        .btn-del { 
+            position: absolute; top: 6px; right: 6px; z-index: 10; background: rgba(0,0,0,0.6); 
+            width: 26px; height: 26px; border-radius: 50%; display: none; align-items: center; justify-content: center; color: white;
+        }
 
-        /* Nút tải từ thư viện */
-        .lib-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .lib-btn { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 8px; display: flex; align-items: center; justify-content: center; gap: 5px; color: var(--text-sub); font-size: 11px; font-weight: 700; position: relative; cursor: pointer; }
-        .lib-btn span { font-size: 18px; color: var(--primary); }
+        /* LIB BTNS & SUBMIT */
+        .lib-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+        .lib-btn { 
+            background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; 
+            display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-sub); font-size: 12px; font-weight: 700;
+            box-shadow: var(--shadow-sm);
+        }
+        .lib-btn:active { transform: translateY(2px); }
+        .btn-sub { 
+            width: 100%; padding: 16px; background: var(--primary-grad); border: none; border-radius: var(--radius); 
+            color: white; font-weight: 800; font-size: 16px; opacity: 0.5; pointer-events: none; transition: 0.3s;
+            box-shadow: var(--shadow);
+        }
+        .btn-sub.ready { opacity: 1; pointer-events: auto; box-shadow: 0 10px 20px -5px var(--primary-light); transform: translateY(-2px); }
+        .btn-sub.ready:active { transform: translateY(0); }
 
-        .btn-sub { width: 100%; padding: 16px; background: var(--primary); border: none; border-radius: 14px; color: white; font-weight: 800; font-size: 15px; opacity: 0.5; pointer-events: none; box-shadow: 0 3px 0 var(--primary-dark); transition: 0.1s; }
-        .btn-sub.ready { opacity: 1; pointer-events: auto; }
+        /* QUEUE ITEM - REDESIGNED (3D & SHADOW) */
+        .q-item { 
+            background: var(--card); padding: 16px; border-radius: 20px; 
+            margin-bottom: 14px; border: 1px solid var(--border); 
+            box-shadow: var(--shadow); /* Bóng đổ 3D */
+            position: relative; overflow: hidden;
+        }
+        .q-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .q-logo-wrap { 
+            width: 32px; height: 32px; background: var(--bg); border-radius: 8px; 
+            display: flex; align-items: center; justify-content: center; margin-right: 10px;
+            box-shadow: var(--shadow-inner);
+        }
+        .q-logo-img { width: 20px; height: 20px; object-fit: contain; }
+        .q-code { font-weight: 800; font-size: 15px; color: var(--text); flex: 1; }
+        .q-badge { 
+            font-size: 10px; padding: 4px 8px; border-radius: 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        
+        /* Loading Bar Styles & Animation */
+        .q-progress-bg { 
+            width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-bottom: 8px; 
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .q-progress-fill { 
+            height: 100%; width: 0%; border-radius: 10px; background: var(--primary-grad);
+            transition: width 0.3s ease-out; position: relative;
+        }
+        /* Hiệu ứng chạy (Stripes Animation) */
+        .q-progress-fill::after {
+            content: ""; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background-image: linear-gradient(
+                45deg, 
+                rgba(255, 255, 255, 0.15) 25%, 
+                transparent 25%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.15) 50%, 
+                rgba(255, 255, 255, 0.15) 75%, 
+                transparent 75%, 
+                transparent
+            );
+            background-size: 20px 20px;
+            animation: moveStripes 1s linear infinite;
+        }
+
+        @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
 
         /* DASHBOARD */
-        .dash-c { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .dash-box { background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
-        .dash-num { font-size: 24px; font-weight: 800; color: var(--text); }
-        .dash-lbl { font-size: 11px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; }
-        .pie-wrap { display: flex; align-items: center; justify-content: center; position: relative; height: 70px; }
-        .pie { width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--border) 0% 100%); position: relative; }
-        .pie::after { content: ""; position: absolute; inset: 12px; background: var(--card); border-radius: 50%; }
-        .pie-legend { font-size: 9px; color: var(--text-sub); margin-left: 5px; display: flex; flex-direction: column; gap: 2px; }
+        .dash-c { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; margin-bottom: 20px; }
+        .dash-box { 
+            background: var(--card); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); 
+            box-shadow: var(--shadow-lg); display: flex; flex-direction: column; justify-content: center; 
+        }
+        .pie-wrap { width: 60px; height: 60px; border-radius: 50%; position: relative; margin-right: 10px; flex-shrink: 0; box-shadow: var(--shadow);}
+        .pie { width: 100%; height: 100%; border-radius: 50%; background: var(--border); transition: background 0.5s; }
+        .pie-center { position: absolute; inset: 15%; background: var(--card); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 10px; font-weight: 700; color: var(--text-sub); }
         .leg-item { display: flex; align-items: center; gap: 4px; }
         .leg-dot { width: 6px; height: 6px; border-radius: 50%; }
 
-        /* ADMIN CARD & FILTERS */
-        .date-header { font-size: 12px; font-weight: 800; color: var(--primary-dark); margin: 15px 0 8px 0; text-transform: uppercase; background: rgba(132, 204, 22, 0.2); display: inline-block; padding: 4px 10px; border-radius: 6px; }
-        
-        .search-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; margin-bottom: 10px; }
-        .inp-date { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0 10px; font-family: inherit; font-size: 12px; color: var(--text-sub); outline: none; }
-        
-        .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
-        .filter-pill { 
-            white-space: nowrap; 
-            padding: 6px 14px; 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: 20px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            color: var(--text-sub); 
-            cursor: pointer; 
-            transition: 0.3s;
-            display: flex;       
-            align-items: center;
-            gap: 6px;            
+        /* SEARCH & FILTER */
+        .search-row { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
+        .search-box { 
+            flex: 1; display: grid; grid-template-columns: 1fr 110px; gap: 8px; background: var(--card); 
+            padding: 6px; border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
         }
-        .filter-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .filter-pill img { height: 18px; width: auto; object-fit: contain; display: block; }
+        .search-box input { border: none; background: transparent; padding: 0 8px; font-size: 13px; color: var(--text); }
+        .btn-refresh { 
+            width: 40px; height: 40px; border-radius: 14px; background: var(--card); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; color: var(--text-sub); flex-shrink: 0; box-shadow: var(--shadow-sm);
+        }
+        .btn-refresh:active { transform: scale(0.95); }
 
-        .adm-card { background: var(--card); padding: 10px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; display: flex; gap: 12px; transition: 0.3s; align-items: flex-start; }
-        .adm-thumb { width: 90px; height: 90px; background: #f3f4f6; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); cursor: pointer; flex-shrink: 0; }
-        .adm-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; height: 90px; }
-        .adm-code { font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
-        .logo-mini { width: 16px; height: 16px; object-fit: contain; }
-        .adm-meta { font-size: 11px; color: var(--text-sub); display: flex; gap: 8px; }
-        .btn-row { display: flex; gap: 5px; margin-top: auto; }
-        .adm-btn { padding: 6px 8px; background: var(--bg); border-radius: 6px; font-size: 10px; color: var(--text); border: 1px solid var(--border); font-weight: 700; cursor: pointer; flex: 1; text-align: center; white-space: nowrap; }
+        .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 16px; scrollbar-width: none; }
+        .filter-pill { 
+            white-space: nowrap; padding: 6px 14px; background: var(--card); border: 1px solid var(--border); 
+            border-radius: 30px; font-size: 12px; font-weight: 600; color: var(--text-sub); transition: 0.2s; box-shadow: var(--shadow-sm);
+        }
+        .filter-pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px var(--primary-light); }
+        .filter-pill img { height: 14px; vertical-align: middle; margin-right: 4px; }
 
-        /* QUEUE */
-        .q-item { background: var(--card); padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--border); }
-        .q-bar-bg { height: 5px; background: var(--bg); border-radius: 3px; overflow: hidden; margin: 5px 0; }
-        .q-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-        .q-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); font-weight: 600; }
+        /* ADMIN LIST */
+        .adm-card { 
+            background: var(--card); padding: 12px; border-radius: 16px; border: 1px solid var(--border); 
+            margin-bottom: 10px; display: flex; gap: 12px; align-items: center; box-shadow: var(--shadow);
+        }
+        .adm-thumb { width: 70px; height: 70px; background: var(--bg); border-radius: 10px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; box-shadow: var(--shadow-sm); }
+        .logo-mini { width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin-right: 4px; }
+        .adm-btn { padding: 6px 10px; background: var(--bg); border-radius: 6px; font-size: 10px; color: var(--text); border: 1px solid var(--border); font-weight: 700; flex: 1; margin-top: 6px; }
 
-        #total-prog { position: fixed; bottom: var(--footer-h); left: 0; right: 0; height: 24px; background: var(--card); border-top: 1px solid var(--border); z-index: 999; display: flex; align-items: center; padding: 0 10px; font-size: 10px; font-weight: 700; color: var(--text); transform: translateY(100%); transition: transform 0.3s; }
-        #total-prog.show { transform: translateY(0); padding-bottom: env(safe-area-inset-bottom); }
-        .tp-bar-bg { flex: 1; height: 6px; background: var(--bg); border-radius: 3px; margin-left: 10px; overflow: hidden; }
-        .tp-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        /* PROGRESS BAR BOTTOM (UPDATED ANIMATION) */
+        #total-prog { 
+            position: fixed; bottom: var(--footer-h); left: 0; right: 0; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border); z-index: 999; 
+            padding: 12px 16px; transform: translateY(110%); transition: 0.4s;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] #total-prog { background: rgba(30, 41, 59, 0.95); }
+        #total-prog.show { transform: translateY(0); padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+        .prog-info { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .prog-detail { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--text); }
+        .prog-logo { width: 20px; height: 20px; object-fit: contain; }
+        .prog-badge { font-size: 10px; background: var(--border); padding: 2px 6px; border-radius: 4px; color: var(--text-sub); }
+        
+        /* Reuse animated bar style */
+        .tp-bar-bg { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+        .tp-bar-fill { 
+            height: 100%; width: 0%; border-radius: 10px; background: var(--primary-grad);
+            transition: width 0.3s ease-out; position: relative;
+        }
+        .tp-bar-fill::after {
+            content: ""; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+            background-size: 20px 20px; animation: moveStripes 1s linear infinite;
+        }
 
-        /* MODAL */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; }
-        .modal-c { width: 95%; max-width: 400px; background: var(--card); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
-        .modal-body { flex: 1; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; min-height: 250px; }
-        .modal-dl { display: block; width: 100%; padding: 15px; background: var(--primary); color: white; text-align: center; text-decoration: none; font-weight: 700; font-size: 14px; }
+        /* FOOTER */
+        #fixed-footer { 
+            position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-h); background: var(--card); 
+            border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; 
+            z-index: 1000; padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+        }
+        .nav-btn { background: none; border: none; color: var(--text-sub); font-size: 11px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 60px; }
+        .nav-btn.active { color: var(--primary-dark); }
+        .nav-btn.active span { transform: translateY(-3px); text-shadow: 0 4px 12px var(--primary-light); }
+        .badge { background: var(--danger); color: white; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 10px; position: absolute; top: -2px; right: 10px; display: none; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4); }
+
+        /* SCANNER MODAL */
+        #scan-mod { position: fixed; inset: 0; z-index: 6000; background: black; display: none; }
+        #scan-mod.active { display: block; }
+        #qr-reader { width: 100%; height: 100%; object-fit: cover; }
+        .scan-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            background: rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .scan-box {
+            width: 250px; height: 250px; border: 2px solid var(--primary); border-radius: 20px;
+            box-shadow: 0 0 0 2000px rgba(0,0,0,0.6); position: relative;
+        }
+        .scan-box::after {
+            content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: var(--primary);
+            box-shadow: 0 0 4px var(--primary); animation: scanLine 2s infinite linear;
+        }
+        @keyframes scanLine { 0% {top:10%} 50% {top:90%} 100% {top:10%} }
+        .btn-close-scan {
+            position: absolute; top: 40px; right: 20px; z-index: 6001; pointer-events: auto;
+            width: 40px; height: 40px; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;
+        }
+
+        /* LOGIN */
+        #login-scr { background: var(--bg); transition: 0.3s; }
+        .login-card { background: var(--card); padding: 30px 20px; border-radius: 24px; width: 85%; max-width: 350px; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow-lg); }
+
+        /* VIEW MODAL */
+        #mod { position: fixed; inset: 0; z-index: 5000; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .mod-tool-top { position: absolute; top: 0; left: 0; right: 0; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 10; }
+        .mod-icon-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
     </style>
 </head>
 <body onload="startTime()">
 
-    <div id="login-scr" style="position:fixed; inset:0; background:var(--bg); z-index:3000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-        <h1 style="font-size: 32px; margin-bottom: 5px; color: var(--primary-dark);">FERRONI</h1>
-        <p style="color: var(--text-sub); font-size: 12px; margin-bottom: 30px;">Enterprise Management</p>
-        <input type="text" id="usr" class="inp-main" placeholder="User" style="width: 80%; margin-bottom: 10px; text-align:center">
-        <input type="password" id="pwd" class="inp-main" placeholder="Password" style="width: 80%; margin-bottom: 20px; text-align:center">
-        <button onclick="doLogin()" class="btn-sub ready" style="width: 80%;">ĐĂNG NHẬP</button>
+    <div id="login-scr" style="position:fixed; inset:0; z-index:3000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div class="login-card">
+            <img src="https://i.ibb.co/NgF0D0WX/4.jpg" style="width:72px; border-radius:14px; margin-bottom:12px; box-shadow:var(--shadow)">
+            <h1 style="font-size: 24px; margin: 0 0 4px 0; color: var(--text);">FERRONI</h1>
+            <p style="color: var(--text-sub); font-size: 12px; margin-bottom: 20px;">Hệ thống quản lý đóng gói V2</p>
+            <input type="text" id="usr" class="inp-main" placeholder="Tên đăng nhập" style="margin-bottom: 10px; text-align:center">
+            <input type="password" id="pwd" class="inp-main" placeholder="Mật khẩu" style="margin-bottom: 20px; text-align:center">
+            <button onclick="doLogin()" class="btn-sub ready">ĐĂNG NHẬP</button>
+        </div>
+    </div>
+
+    <div id="scan-mod">
+        <div class="btn-close-scan" onclick="stopScanner()"><span class="material-icons-round">close</span></div>
+        <div id="qr-reader"></div>
+        <div class="scan-overlay">
+            <div class="scan-box"></div>
+            <div style="color:white; margin-top:20px; font-weight:600; text-align:center; padding:0 20px">
+                Di chuyển camera đến mã QR hoặc Mã vạch<br>
+                <span style="font-size:12px; font-weight:400; opacity:0.8">(Hỗ trợ QR Code & Code 128 VTP)</span>
+            </div>
+        </div>
     </div>
 
     <div id="fixed-header">
         <div class="brand-c">
-            <div class="app-logo"><a href="#"><img src="https://i.ibb.co/NgF0D0WX/4.jpg"></a></div>
+            <div class="app-logo"><img src="https://i.ibb.co/NgF0D0WX/4.jpg"></div>
             <div class="brand-txt">
                 <div class="brand-name">FERRONI</div>
                 <div id="real-time" class="brand-date">...</div>
             </div>
         </div>
-        <div style="display:flex; align-items:center; gap:10px">
-            <div class="theme-switch" onclick="toggleTheme()">
-                <span class="material-icons-round theme-icon" style="font-size:14px">dark_mode</span>
-                <span class="material-icons-round theme-icon" style="font-size:14px; color:#eab308">light_mode</span>
-                <div class="theme-knob"></div>
+        <div style="display:flex; align-items:center; gap:8px">
+            <div onclick="toggleTheme()" style="padding:6px; cursor:pointer">
+                <span class="material-icons-round" style="color:var(--text-sub)">contrast</span>
             </div>
-            <div id="user-display" class="user-tag">...</div>
+            <div id="user-display" style="font-size:13px; font-weight:700; color:var(--text)">...</div>
         </div>
     </div>
 
@@ -190,44 +371,47 @@
             </div>
 
             <div class="inp-grp">
-                <input type="text" id="o-code" class="inp-main" placeholder="Nhập hoặc quét mã đơn...">
-                <div class="btn-scan"><span class="material-icons-round" style="color:white; font-size:24px;">qr_code_scanner</span><input type="file" id="scn" class="hidden-inp" accept="image/*" capture="environment" onchange="onScan(this)"></div>
+                <input type="text" id="o-code" class="inp-main" placeholder="Quét mã vận đơn...">
+                <div class="btn-scan" onclick="startScanner()">
+                    <span class="material-icons-round" style="color:white; font-size:22px;">qr_code_scanner</span>
+                </div>
             </div>
 
+            <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-bottom:8px; text-transform:uppercase">Media đóng gói</div>
             <div class="media-row">
-                <div class="media-c" id="c-img">
-                    <div class="btn-del" id="d-img" onclick="del('img')">✕</div>
-                    <span class="material-icons-round" style="font-size:28px; color:var(--text-sub)">camera_alt</span>
-                    <div style="font-size:9px; color:var(--text-sub); font-weight:700; margin-top:5px">CHỤP ẢNH</div>
+                <div class="media-c" id="c-img" onclick="document.getElementById('i-img').click()">
+                    <div class="btn-del" id="d-img" onclick="event.stopPropagation(); del('img')"><span class="material-icons-round" style="font-size:18px">close</span></div>
+                    <span class="material-icons-round" style="font-size:32px; color:var(--primary); background:var(--primary-light); padding:10px; border-radius:50%">camera_alt</span>
+                    <div style="font-size:11px; color:var(--text-sub); font-weight:700; margin-top:8px">CHỤP ẢNH</div>
                     <img id="v-img" class="media-prev">
                     <input type="file" id="i-img" class="hidden-inp" accept="image/*" capture="environment" onchange="onMedia(this,'img')">
                 </div>
-                <div class="media-c" id="c-vid">
-                    <div class="btn-del" id="d-vid" onclick="del('vid')">✕</div>
-                    <span class="material-icons-round" style="font-size:28px; color:var(--text-sub)">videocam</span>
-                    <div style="font-size:9px; color:var(--text-sub); font-weight:700; margin-top:5px">QUAY VIDEO</div>
+                <div class="media-c" id="c-vid" onclick="document.getElementById('i-vid').click()">
+                    <div class="btn-del" id="d-vid" onclick="event.stopPropagation(); del('vid')"><span class="material-icons-round" style="font-size:18px">close</span></div>
+                    <span class="material-icons-round" style="font-size:32px; color:var(--primary); background:var(--primary-light); padding:10px; border-radius:50%">videocam</span>
+                    <div style="font-size:11px; color:var(--text-sub); font-weight:700; margin-top:8px">QUAY NHANH</div>
                     <video id="v-vid" class="media-prev" playsinline muted></video>
                     <input type="file" id="i-vid" class="hidden-inp" accept="video/*" capture="environment" onchange="onMedia(this,'vid')">
                 </div>
             </div>
 
             <div class="lib-btn-row">
-                <div class="lib-btn">
-                    <span class="material-icons-round">cloud_upload</span>TẢI ẢNH
+                <label class="lib-btn">
+                    <span class="material-icons-round">photo_library</span>Thư viện
                     <input type="file" class="hidden-inp" accept="image/*" onchange="onMedia(this,'img')">
-                </div>
-                <div class="lib-btn">
-                    <span class="material-icons-round">cloud_upload</span>TẢI VIDEO
+                </label>
+                <label class="lib-btn" style="border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark)">
+                    <span class="material-icons-round">video_library</span>Video HD
                     <input type="file" class="hidden-inp" accept="video/*" onchange="onMedia(this,'vid')">
-                </div>
+                </label>
             </div>
 
             <button id="btn-up" class="btn-sub" onclick="addQ()">LƯU ĐƠN HÀNG</button>
-            <div style="height:50px"></div>
+            <div style="height:80px"></div>
         </div>
 
         <div id="p-que" class="page">
-            <h4 style="margin:0 0 10px 0; color:var(--text-sub)">Tiến trình tải lên</h4>
+            <h3 style="margin:0 0 15px 0; color:var(--text)">Danh sách chờ tải lên</h3>
             <div id="q-list"></div>
         </div>
 
@@ -235,23 +419,28 @@
             <div id="adm-dash" class="dash-c" style="display:none">
                 <div class="dash-box">
                     <div id="d-today" class="dash-num">0</div>
-                    <div class="dash-lbl">Đơn hôm nay</div>
+                    <div style="font-size:11px; color:var(--text-sub); font-weight:600">Đơn hôm nay</div>
                 </div>
-                <div class="dash-box" style="flex-direction:row; align-items:center; gap:5px">
-                    <div class="pie-wrap"><div id="d-pie" class="pie"></div></div>
-                    <div class="pie-legend" id="d-legend"></div>
+                <div class="dash-box" style="flex-direction:row; align-items:center; padding:10px">
+                    <div class="pie-wrap">
+                        <div id="d-pie" class="pie"></div>
+                        <div class="pie-center"></div>
+                    </div>
+                    <div class="legend-grid" id="d-legend"></div>
                 </div>
             </div>
 
             <div class="main-tabs">
-                <div class="tab-btn active" onclick="setMode('out')" id="ta-out">ĐƠN ĐI (Out)</div>
-                <div class="tab-btn" onclick="setMode('in')" id="ta-in">ĐƠN HOÀN (In)</div>
+                <div class="tab-btn active" onclick="setMode('out')" id="ta-out">ĐƠN ĐI</div>
+                <div class="tab-btn" onclick="setMode('in')" id="ta-in">ĐƠN HOÀN</div>
             </div>
 
             <div class="search-row">
-                <input type="text" id="search" class="inp-main" placeholder="Tìm kiếm..." onkeyup="renderAdm()" style="padding:10px; font-size:13px; grid-column: span 1">
-                <input type="date" id="date-filt" class="inp-date" onchange="renderAdm()">
-                <button onclick="refreshAdm()" style="background:var(--card); border:1px solid var(--border); border-radius:12px; width:45px; color:var(--text-sub); cursor:pointer"><span class="material-icons-round">refresh</span></button>
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="Tìm mã đơn..." onkeyup="renderAdm()">
+                    <input type="date" id="date-filt" class="inp-date" onchange="renderAdm()">
+                </div>
+                <div class="btn-refresh" onclick="refreshAdm()"><span class="material-icons-round">refresh</span></div>
             </div>
             
             <div class="filter-scroll">
@@ -263,38 +452,65 @@
             </div>
 
             <div id="adm-list"></div>
+            <div style="height:60px"></div>
         </div>
     </div>
 
     <div id="total-prog">
-        <span id="tp-txt">Đang tải...</span>
+        <div class="prog-info">
+            <div class="prog-detail">
+                <img id="tp-logo" class="prog-logo" src="">
+                <span id="tp-txt">Đang tải...</span>
+                <span id="tp-plus" class="prog-badge">+0</span>
+            </div>
+            <span id="tp-pct" style="font-size:12px; font-weight:800; color:var(--primary-dark)">0%</span>
+        </div>
         <div class="tp-bar-bg"><div id="tp-fill" class="tp-bar-fill"></div></div>
+        <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:10px; color:var(--text-sub); font-weight:600">
+            <span id="tp-spd">0 MB/s</span>
+            <span id="tp-eta">0s</span>
+        </div>
     </div>
 
     <div id="fixed-footer">
-        <button class="nav-btn active" onclick="go('rec')"><span class="material-icons-round">qr_code</span>Quay đơn</button>
-        <button class="nav-btn" onclick="go('que')" style="position:relative"><span class="material-icons-round">cloud_upload</span><div id="bdg" class="badge">0</div>Queue</button>
-        <button class="nav-btn" onclick="go('adm')"><span class="material-icons-round">dashboard</span>Quản lý</button>
+        <button class="nav-btn active" onclick="go('rec')">
+            <span class="material-icons-round">qr_code_2</span>Quay đơn
+        </button>
+        <button class="nav-btn" onclick="go('que')" style="position:relative">
+            <span class="material-icons-round">cloud_queue</span>
+            <div id="bdg" class="badge">0</div>Hàng chờ
+        </button>
+        <button class="nav-btn" onclick="go('adm')">
+            <span class="material-icons-round">space_dashboard</span>Quản lý
+        </button>
     </div>
 
-    <div id="mod" class="modal">
-        <div class="modal-c">
-            <div style="padding:15px; background:var(--card); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border)">
-                <span id="mod-title" style="font-weight:700; color:var(--text)">CHI TIẾT</span>
-                <span style="color:#ef4444; font-size:24px; cursor:pointer" onclick="closeMod()">✕</span>
+    <div id="mod">
+        <div class="mod-tool-top">
+            <span style="color:white; font-weight:700" id="mod-title">Chi tiết</span>
+            <div style="display:flex; gap:10px">
+                <a id="dl-btn" href="#" target="_blank" class="mod-icon-btn"><span class="material-icons-round">download</span></a>
+                <div class="mod-icon-btn" onclick="closeMod()"><span class="material-icons-round">close</span></div>
             </div>
-            <div class="modal-body">
-                <iframe id="ifr" width="100%" height="100%" style="border:none; display:none; position:absolute; inset:0"></iframe>
-                <img id="img-view" style="max-width:100%; max-height:100%; display:none; object-fit:contain">
-            </div>
-            <a id="dl" href="#" target="_blank" class="modal-dl">TẢI VỀ</a>
+        </div>
+        <div class="mod-content">
+            <iframe id="ifr" width="100%" height="100%" style="border:none; display:none; position:absolute; inset:0"></iframe>
+            <img id="img-view">
+        </div>
+        <div class="mod-tool-bottom" id="mod-ctrls">
+            <div class="mod-icon-btn" onclick="zoom(-0.5)"><span class="material-icons-round">remove</span></div>
+            <div class="mod-icon-btn" onclick="resetZoom()"><span class="material-icons-round">restart_alt</span></div>
+            <div class="mod-icon-btn" onclick="zoom(0.5)"><span class="material-icons-round">add</span></div>
         </div>
     </div>
 
 <script>
     const API = "https://script.google.com/macros/s/AKfycbz1rgAM0fV2OFkGqPRW1PYoJA_DvFA3vicGNLg-1U29XSRPrxV--3oHzWKU8_8WEMQV/exec";
+    const logos = {'Shopee':'https://i.ibb.co/ymqBwR9K/shopee-logo-png-seeklogo-378738-removebg-preview.png','TikTok':'https://i.ibb.co/0yZXscPz/Screenshot-2026-01-08-163441-removebg-preview.png','Lazada':'https://i.ibb.co/0VqqmmCV/19a57791bf92848b511de18eaebca94a-removebg-preview.png','VTP':'https://i.ibb.co/7dNs15VX/Screenshot-2026-01-08-164038.png'};
     let user=null, mode='Đơn đi', filt='All', Q=[], up=false, db=[];
+    let curScale = 1; html5QrCode = null;
 
+    // Theme & Clock
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -307,21 +523,17 @@
 
     function startTime() {
         const today = new Date();
-        const d = today.getDate();
-        const m = today.getMonth() + 1;
-        const y = today.getFullYear();
-        document.getElementById('real-time').innerHTML = (d<10?'0'+d:d) + "/" + (m<10?'0'+m:m) + "/" + y;
+        const d = String(today.getDate()).padStart(2,'0');
+        const m = String(today.getMonth()+1).padStart(2,'0');
+        document.getElementById('real-time').innerHTML = `${d}/${m}/${today.getFullYear()}`;
         
         if(!document.getElementById('date-filt').value){
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            document.getElementById('date-filt').value = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('date-filt').value = today.toISOString().slice(0,10);
         }
-        
         setTimeout(startTime, 60000); 
     }
 
+    // Login
     function doLogin(){
         const u=document.getElementById('usr').value, p=document.getElementById('pwd').value;
         if(!u||!p) return;
@@ -332,11 +544,9 @@
                 user=d; document.getElementById('login-scr').style.display='none';
                 document.getElementById('user-display').innerText=d.name;
                 if(d.role==='admin') refreshAdm();
-            } else { alert(d.message); document.querySelector('#login-scr button').innerText="ĐANG NHẬP"; }
+            } else { alert(d.message); document.querySelector('#login-scr button').innerText="ĐĂNG NHẬP"; }
         });
     }
-
-    function vib(){ if(navigator.vibrate) navigator.vibrate(50); }
 
     function go(p){
         document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
@@ -360,16 +570,45 @@
         renderAdm();
     }
 
+    // --- SCANNER LOGIC (POPUP + BARCODE SUPPORT) ---
+    function startScanner(){
+        document.getElementById('scan-mod').classList.add('active');
+        html5QrCode = new Html5Qrcode("qr-reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspect: 1.0 };
+        
+        html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+        .catch(err => {
+            alert("Lỗi camera: " + err);
+            stopScanner();
+        });
+    }
+
+    function stopScanner(){
+        if(html5QrCode){
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+                document.getElementById('scan-mod').classList.remove('active');
+            }).catch(err => console.log(err));
+        } else {
+            document.getElementById('scan-mod').classList.remove('active');
+        }
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if(navigator.vibrate) navigator.vibrate(200);
+        document.getElementById('o-code').value = decodedText;
+        stopScanner();
+        chk();
+    }
+
+    // Media Logic
     let fI=null, fV=null;
     function onMedia(e,k){
         if(e.files[0]){
             const f=e.files[0];
             if(k==='img'){
-                addWatermark(f, (blob)=>{
-                    fI=blob; show('img', URL.createObjectURL(blob)); chk();
-                });
+                addWatermark(f, (blob)=>{ fI=blob; show('img', URL.createObjectURL(blob)); chk(); });
             } else { fV=f; show('vid', URL.createObjectURL(f)); chk(); }
-            // Reset input so same file can be selected again
             e.value = '';
         }
     }
@@ -415,25 +654,16 @@
         document.getElementById('c-'+k).classList.remove('ok'); document.getElementById('d-'+k).style.display='none';
         chk();
     }
-
-    function onScan(e){
-        if(e.files[0]){
-            document.getElementById('o-code').value="Đang quét...";
-            new Html5Qrcode("scn").scanFile(e.files[0],true)
-            .then(t=>{ document.getElementById('o-code').value=t; chk(); vib(); })
-            .catch(()=>{ alert("Không thấy mã"); document.getElementById('o-code').value=""; });
-        }
-    }
-
     function chk(){
         if(document.getElementById('o-code').value && fI && fV) document.getElementById('btn-up').classList.add('ready');
         else document.getElementById('btn-up').classList.remove('ready');
     }
 
+    // Upload Queue Logic
     function addQ(){
         const c=document.getElementById('o-code').value, ch=document.querySelector('input[name="ch"]:checked').value;
-        Q.push({id:Date.now(), c:c, ch:ch, tp:mode, sf:user.name, img:fI, vid:fV, st:'waiting', pg:0, spd:0, loaded:0, total:(fV.size/1024/1024).toFixed(1)});
-        vib(); renQ(); rst(); if(!up) run();
+        Q.push({id:Date.now(), c:c, ch:ch, tp:mode, sf:user.name, img:fI, vid:fV, st:'waiting', pg:0, spd:0, loaded:0, total:(fV.size/1024/1024).toFixed(1), eta: '...'});
+        if(navigator.vibrate) navigator.vibrate(50); renQ(); rst(); if(!up) run();
     }
     function rst(){ document.getElementById('o-code').value=''; del('img'); del('vid'); }
 
@@ -445,194 +675,205 @@
 
         try {
             const bI = await toB64(j.img);
-            const rI = await api({action:'upload_chunk', data:bI, fileName:`IMG_${j.c}.jpg`, mimeType:j.img.type, isFirst:true});
+            const rI = await api({action:'upload_chunk', data:bI, fileName:`IMG_${j.c}.jpg`, mimeType:j.img.type, isFirst:true, isLast:true});
             
-            const SZ = 5*1024*1024; const tot = j.vid.size;
-            let start=0, fid=null, vUrl="";
-            while(start<tot){
-                const t1 = Date.now(); const end = Math.min(start+SZ, tot);
-                const chunk = j.vid.slice(start, end); const b64 = await toB64(chunk);
-                const res = await api({action:'upload_chunk', data:b64, fileName:`VID_${j.c}.mp4`, mimeType:j.vid.type, isFirst:(start===0), fileId:fid});
-                fid=res.fileId; vUrl=res.fileUrl;
-                const t2 = Date.now();
-                j.spd = ((end-start)/1024/1024/((t2-t1)/1000)).toFixed(1);
+            const SZ = 1.5 * 1024 * 1024; const tot = j.vid.size;
+            let start = 0, fid = null, vUrl = "";
+            
+            while(start < tot){
+                const tS = Date.now();
+                const end = Math.min(start + SZ, tot);
+                const chunk = j.vid.slice(start, end);
+                const b64 = await toB64(chunk);
+                
+                const res = await api({
+                    action:'upload_chunk', data:b64, fileName:`VID_${j.c}.mp4`, 
+                    mimeType:j.vid.type, isFirst:(start===0), isLast:(end >= tot), fileId:fid
+                });
+                if(res.result === "error") throw new Error(res.message);
+                fid = res.fileId; if(end >= tot) vUrl = res.fileUrl;
+
+                const dur = (Date.now() - tS) / 1000;
+                const spd = (end - start) / 1024 / 1024 / dur;
+                j.spd = spd.toFixed(1);
                 j.loaded = (end/1024/1024).toFixed(1);
-                j.pg = Math.round((end/tot)*90);
-                renQ(); start=end;
+                j.pg = Math.round((end/tot)*99);
+                j.eta = Math.round(((tot-end)/1024/1024)/spd) + "s";
+                renQ(); start = end;
             }
-            await api({action:'save_meta', maDon:j.c, type:j.tp, channel:j.ch, staffName:j.sf, videoUrl:vUrl, thumbLink:rI.fileUrl}); 
-            j.st='done'; j.pg=100; setTimeout(()=>{Q=Q.filter(x=>x.id!==j.id); renQ();},2000);
-            refreshAdm();
-        } catch(e){ j.st='error'; alert("Lỗi: "+e.message); }
+            await api({action:'save_meta', maDon:j.c, type:j.tp, channel:j.ch, staffName:j.sf, videoUrl:vUrl, thumbLink:rI.thumbLink}); 
+            j.st='done'; j.pg=100; setTimeout(()=>{Q=Q.filter(x=>x.id!==j.id); renQ();}, 2000); refreshAdm();
+        } catch(e){ j.st='error'; alert("Lỗi tải lên: " + e.message); }
         renQ(); setTimeout(run,500);
     }
 
     function renQ(){
-        const el=document.getElementById('q-list');
-        const count = Q.length;
-        document.getElementById('bdg').innerText=count;
-        document.getElementById('bdg').style.display=count?'block':'none';
-        
+        const el=document.getElementById('q-list'); const count = Q.length;
+        document.getElementById('bdg').innerText=count; document.getElementById('bdg').style.display=count?'block':'none';
         const bar = document.getElementById('total-prog');
+        
         if(count > 0) {
             bar.classList.add('show');
-            const uploading = Q.find(x=>x.st==='uploading');
-            const waiting = Q.filter(x=>x.st==='waiting').length;
-            if(uploading) {
-                document.getElementById('tp-txt').innerText = `Đang tải: ${uploading.c} (${uploading.pg}%) - Còn ${waiting} đơn`;
-                document.getElementById('tp-fill').style.width = uploading.pg + '%';
+            const u = Q.find(x=>x.st==='uploading');
+            const pending = count - 1;
+            if(u) {
+                document.getElementById('tp-txt').innerText = u.c;
+                document.getElementById('tp-logo').src = logos[u.ch];
+                document.getElementById('tp-plus').innerText = `+${pending}`;
+                document.getElementById('tp-pct').innerText = `${u.pg}%`;
+                document.getElementById('tp-fill').style.width = u.pg + '%';
+                document.getElementById('tp-spd').innerText = `${u.spd} MB/s`;
+                document.getElementById('tp-eta').innerText = `Còn ${u.eta}`;
             } else {
-                document.getElementById('tp-txt').innerText = `Đang chờ mạng... (${count} đơn)`;
-                document.getElementById('tp-fill').style.width = '0%';
+                document.getElementById('tp-txt').innerText = "Chờ mạng...";
+                document.getElementById('tp-plus').innerText = `+${count}`;
             }
         } else { bar.classList.remove('show'); }
 
         el.innerHTML=Q.map(x=>`
             <div class="q-item">
-                <div class="q-row" style="margin-bottom:5px"><span>${x.c} (${x.ch})</span> <span style="color:${x.st==='done'?'#10b981':'#facc15'}">${x.st}</span></div>
-                <div class="q-bar-bg"><div class="q-bar-fill" style="width:${x.pg}%"></div></div>
-                <div class="q-row" style="color:var(--text-sub); font-size:11px"><span>${x.loaded}/${x.total} MB</span><span>${x.spd} MB/s</span></div>
+                <div class="q-header">
+                    <div style="display:flex; align-items:center;">
+                        <div class="q-logo-wrap"><img src="${logos[x.ch]}" class="q-logo-img"></div>
+                        <div class="q-code">${x.c}</div>
+                    </div>
+                    <div class="q-badge" style="color:${x.st==='done'?'#10b981': x.st==='error'?'#ef4444':'#facc15'}; background:${x.st==='done'?'rgba(16,185,129,0.1)': x.st==='error'?'rgba(239,68,68,0.1)':'rgba(250,204,21,0.1)'}">${x.st.toUpperCase()}</div>
+                </div>
+                
+                <div class="q-progress-bg"><div class="q-progress-fill" style="width:${x.pg}%"></div></div>
+                
+                <div style="font-size:11px; color:var(--text-sub); display:flex; justify-content:space-between; font-weight:600">
+                    <span>${x.loaded}/${x.total} MB</span>
+                    <span>${x.spd} MB/s</span>
+                </div>
             </div>`).join('');
     }
 
+    // Dashboard & Admin
     function refreshAdm(){
-        const btn = document.querySelector('button[onclick="refreshAdm()"]');
-        btn.innerHTML = '...';
-        api({action:'get_report'}).then(d=>{ db=d; renderAdm(); renderDash(); btn.innerHTML='<span class="material-icons-round">refresh</span>'; });
+        const btn = document.querySelector('.btn-refresh');
+        btn.innerHTML = '<span class="material-icons-round" style="animation:spin 1s infinite linear">sync</span>';
+        api({action:'get_report'}).then(d=>{ 
+            db=d; renderDash(); renderAdm(); 
+            btn.innerHTML='<span class="material-icons-round">refresh</span>'; 
+        });
     }
 
     function renderDash(){
         document.getElementById('adm-dash').style.display='grid';
-        const now = new Date();
-        const d = String(now.getDate()).padStart(2, '0');
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const y = now.getFullYear();
+        const today = new Date();
+        const y = today.getFullYear();
+        const m = String(today.getMonth() + 1).padStart(2, '0');
+        const d = String(today.getDate()).padStart(2, '0');
         const todayStr = `${d}/${m}/${y}`;
 
         const todayData = db.filter(x => {
             if(!x.time) return false;
-            const itemDate = String(x.time).substring(0, 10);
-            return itemDate === todayStr;
+            const itemDate = String(x.time).split(' ')[0]; 
+            return itemDate.includes(todayStr) || String(x.time).startsWith(`${y}-${m}-${d}`);
         });
-        
+
         document.getElementById('d-today').innerText = todayData.length;
 
-        const counts = { Shopee:0, TikTok:0, Lazada:0, VTP:0 };
-        todayData.forEach(x => { if(counts[x.channel]!==undefined) counts[x.channel]++ });
-        const total = todayData.length || 1;
-        const pS = (counts.Shopee/total)*100; const pT = (counts.TikTok/total)*100; const pL = (counts.Lazada/total)*100;
-
-        document.getElementById('d-pie').style.background = `conic-gradient(var(--chart-shopee) 0% ${pS}%, var(--chart-tiktok) ${pS}% ${pS+pT}%, var(--chart-lazada) ${pS+pT}% ${pS+pT+pL}%, var(--chart-other) ${pS+pT+pL}% 100%)`;
+        const C = { Shopee:0, TikTok:0, Lazada:0, VTP:0 };
+        todayData.forEach(x => { if(C[x.channel]!==undefined) C[x.channel]++ });
+        const tot = todayData.length || 1;
+        const pS=(C.Shopee/tot)*100, pT=(C.TikTok/tot)*100, pL=(C.Lazada/tot)*100;
+        
+        document.getElementById('d-pie').style.background = 
+            `conic-gradient(var(--chart-shopee) 0% ${pS}%, var(--chart-tiktok) ${pS}% ${pS+pT}%, var(--chart-lazada) ${pS+pT}% ${pS+pT+pL}%, var(--chart-other) ${pS+pT+pL}% 100%)`;
+            
         document.getElementById('d-legend').innerHTML = `
-            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-shopee)"></div>S (${counts.Shopee})</div>
-            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-tiktok)"></div>T (${counts.TikTok})</div>
-            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-lazada)"></div>L (${counts.Lazada})</div>
-            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-other)"></div>V (${counts.VTP})</div>`;
+            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-shopee)"></div>S (${C.Shopee})</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-tiktok)"></div>T (${C.TikTok})</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-lazada)"></div>L (${C.Lazada})</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--chart-other)"></div>V (${C.VTP})</div>`;
     }
-
-    function getDirectLink(url) {
-        if (!url) return 'https://via.placeholder.com/100?text=No+Img';
-        const match = url.match(/[-\w]{25,}/);
-        if (match) {
-            return `https://drive.google.com/thumbnail?id=${match[0]}&sz=w400`;
-        }
-        return url;
-    }
-    
-    function getDownloadLink(url) {
-        if (!url) return '#';
-        const match = url.match(/[-\w]{25,}/);
-        if (match) {
-            return `https://drive.google.com/uc?export=download&id=${match[0]}`;
-        }
-        return url;
-    }
-
-    const logos = {'Shopee':'https://i.ibb.co/ymqBwR9K/shopee-logo-png-seeklogo-378738-removebg-preview.png','TikTok':'https://i.ibb.co/0yZXscPz/Screenshot-2026-01-08-163441-removebg-preview.png','Lazada':'https://i.ibb.co/0VqqmmCV/19a57791bf92848b511de18eaebca94a-removebg-preview.png','VTP':'https://i.ibb.co/7dNs15VX/Screenshot-2026-01-08-164038.png'};
 
     function renderAdm(){
         const k = document.getElementById('search').value.toLowerCase();
-        const dateInput = document.getElementById('date-filt').value;
-        if(!dateInput) return;
-        const [y, m, d] = dateInput.split('-');
-        const filterStr = `${d}/${m}/${y}`;
+        const rawD = document.getElementById('date-filt').value;
+        if(!rawD) return;
+        const [y, m, d] = rawD.split('-');
+        const d_vn = `${d}/${m}/${y}`;
+        const d_iso = `${y}-${m}-${d}`;
 
         const data = db.filter(x => {
-            if(!x.time) return false;
-            const itemDate = String(x.time).substring(0, 10);
-            const matchesDate = itemDate === filterStr;
-            const matchesCode = x.code.toLowerCase().includes(k);
-            const matchesType = x.type === mode;
-            const matchesChannel = filt === 'All' || x.channel === filt;
-            return matchesDate && matchesCode && matchesType && matchesChannel;
+            const t = String(x.time);
+            const dateMatch = t.includes(d_vn) || t.startsWith(d_iso);
+            return dateMatch && x.code.toLowerCase().includes(k) && x.type === mode && (filt === 'All' || x.channel === filt);
         });
 
         const el = document.getElementById('adm-list');
-        const displayErrDate = `${d}/${m}/${y}`;
-        if(!data.length){ el.innerHTML='<div style="text-align:center; color:var(--text-sub); padding:20px">Không có dữ liệu ngày ' + displayErrDate + '</div>'; return; }
-
-        let html = ''; let lastDate = '';
-        data.forEach(x => {
-            let itemDate = String(x.time).substring(0, 10);
-            const now = new Date();
-            const todayStr = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
-            const displayDate = (itemDate === todayStr) ? `HÔM NAY (${itemDate})` : `NGÀY ${itemDate}`;
-            if(displayDate !== lastDate){ html += `<div style="margin:10px 0 5px 0"><span class="date-header">${displayDate}</span></div>`; lastDate = displayDate; }
-            const lg = logos[x.channel] || '';
-            const displayThumb = getDirectLink(x.imageUrl);
-            const displayTime = String(x.time).length > 10 ? String(x.time).substring(11) : "";
-
-            html += `<div class="adm-card">
-                <img src="${displayThumb}" class="adm-thumb" onclick="viewImg('${x.imageUrl}')" onerror="this.src='https://via.placeholder.com/100?text=Error'">
+        if(!data.length){ el.innerHTML='<div style="text-align:center; padding:30px; font-size:13px; color:var(--text-sub)">Không có dữ liệu</div>'; return; }
+        
+        el.innerHTML = data.map(x => `
+            <div class="adm-card">
+                <img src="${getThumb(x.imageUrl)}" class="adm-thumb" onclick="viewImg('${x.imageUrl}')">
                 <div class="adm-info">
-                    <div class="adm-code"><img src="${lg}" class="logo-mini"> ${x.code}</div>
-                    <div class="adm-meta">${x.staff}</div>
-                    <div class="adm-meta" style="font-size:10px">${displayTime}</div>
-                    <div class="btn-row">
-                        <button class="adm-btn" onclick="play('${x.videoUrl}')">Xem Video</button>
-                        <button class="adm-btn" onclick="viewImg('${x.imageUrl}')">Xem Ảnh</button>
+                    <div class="adm-code"><img src="${logos[x.channel]}" class="logo-mini"> ${x.code}</div>
+                    <div style="font-size:11px; color:var(--text-sub);">${x.staff} • ${String(x.time).split(' ')[1] || ''}</div>
+                    <div style="display:flex; gap:6px">
+                        <button class="adm-btn" onclick="play('${x.videoUrl}')">VIDEO</button>
+                        <button class="adm-btn" onclick="viewImg('${x.imageUrl}')">ẢNH</button>
                     </div>
                 </div>
-            </div>`;
-        });
-        el.innerHTML = html;
+            </div>`).join('');
     }
+
+    function getThumb(u){ return u ? `https://drive.google.com/thumbnail?id=${u.match(/[-\w]{25,}/)?.[0]}&sz=w200` : ''; }
+    function getDL(u){ return u ? `https://drive.google.com/uc?export=download&id=${u.match(/[-\w]{25,}/)?.[0]}` : '#'; }
 
     function play(u){
         const id = u.match(/[-\w]{25,}/);
         if(id){
+            openMod('VIDEO ĐÓNG GÓI', getDL(u), true);
             document.getElementById('ifr').src = `https://drive.google.com/file/d/${id[0]}/preview`;
             document.getElementById('ifr').style.display = 'block';
             document.getElementById('img-view').style.display = 'none';
-            document.getElementById('mod-title').innerText = "VIDEO ĐÓNG GÓI";
-            document.getElementById('dl').innerText = "TẢI VIDEO GỐC";
-            document.getElementById('dl').href = `https://drive.google.com/uc?export=download&id=${id[0]}`;
-            document.getElementById('mod').style.display='flex';
+            document.getElementById('mod-ctrls').style.display='none'; 
         }
     }
-
+    
     function viewImg(u){
-        if(!u) { alert("Không có ảnh cho đơn này"); return; }
-        const directLink = getDirectLink(u);
-        document.getElementById('img-view').src = directLink;
+        if(!u) return;
+        openMod('ẢNH XÁC THỰC', getDL(u), false);
+        document.getElementById('img-view').src = `https://drive.google.com/thumbnail?id=${u.match(/[-\w]{25,}/)?.[0]}&sz=w1000`; 
         document.getElementById('img-view').style.display = 'block';
         document.getElementById('ifr').style.display = 'none';
-        document.getElementById('ifr').src = ''; 
-        const dlLink = getDownloadLink(u);
-        document.getElementById('mod-title').innerText = "ẢNH XÁC THỰC";
-        document.getElementById('dl').innerText = "TẢI ẢNH VỀ MÁY";
-        document.getElementById('dl').href = dlLink;
+        document.getElementById('mod-ctrls').style.display='flex';
+        resetZoom();
+    }
+
+    function openMod(title, dlUrl, isVideo){
         document.getElementById('mod').style.display='flex';
+        setTimeout(()=>document.getElementById('mod').classList.add('active'), 10);
+        document.getElementById('mod-title').innerText = title;
+        document.getElementById('dl-btn').href = dlUrl;
     }
 
     function closeMod(){ 
-        document.getElementById('mod').style.display='none'; 
-        document.getElementById('ifr').src=''; 
-        document.getElementById('img-view').src=''; 
+        document.getElementById('mod').classList.remove('active');
+        setTimeout(()=>{
+            document.getElementById('mod').style.display='none'; 
+            document.getElementById('ifr').src=''; 
+            document.getElementById('img-view').src=''; 
+        }, 300);
     }
-    
+
+    function zoom(d){
+        curScale += d; 
+        if(curScale < 0.5) curScale = 0.5;
+        if(curScale > 4) curScale = 4;
+        document.getElementById('img-view').style.transform = `scale(${curScale})`;
+    }
+    function resetZoom(){ curScale=1; document.getElementById('img-view').style.transform = `scale(1)`; }
+
     function toB64(f){return new Promise((r)=>{const reader=new FileReader(); reader.onload=()=>r(reader.result.split(',')[1]); reader.readAsDataURL(f);});}
     function api(d){return fetch(API,{method:'POST',body:JSON.stringify(d)}).then(r=>r.json());}
 </script>
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
 </body>
 </html>
